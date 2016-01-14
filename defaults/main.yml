@@ -1,0 +1,5 @@
+# file: roles/memcached/defaults/main.yml
+---
+env: vagrant
+
+force_install_memcached: no

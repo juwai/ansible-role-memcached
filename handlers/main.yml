@@ -1,0 +1,7 @@
+# file: roles/memcached/handlers/main.yml
+---
+- name: start memcached
+  service:
+    name: memcached
+    state: started
+  when: env == 'vagrant' or force_install_memcached

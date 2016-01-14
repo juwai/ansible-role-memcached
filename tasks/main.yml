@@ -1,0 +1,35 @@
+# file: roles/memcached/tasks/main.yml
+---
+- name: Ensure libmemcached-devel and libmemcached packages are installed.
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - libmemcached10
+    - libmemcached10-devel
+  when: ansible_distribution != 'Amazon'
+
+- name: Ensure libmemcached-devel and libmemcached packages are installed.
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - libmemcached
+    - libmemcached-devel
+  when: ansible_distribution == 'Amazon'
+
+- name: Ensure memcached packages is installed.
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - memcached
+  notify: start memcached
+  when: env == 'vagrant' or force_install_memcached
+
+- name: Ensure memcached start on boot
+  service:
+    name: memcached
+    state: started
+    enabled: yes
+  when: env == 'vagrant' or force_install_memcached
